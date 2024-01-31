@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+
+<VBox id="mainMenu" alignment="CENTER_LEFT" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.base.game.physicsexplorer.MainMenu.MainMenuController">
+
+    <stylesheets>
+        <URL value="@styles.css" />
+    </stylesheets>
+
+    <padding>
+        <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
+    </padding>
+
+    <Label fx:id="mainMenuLabel" alignment="CENTER" styleClass="main-title" text="Physics Explorer" />
+
+    <HBox spacing="20.0">
+        <VBox spacing="10.0">
+            <Button onAction="#onpsButtonClick" styleClass="menu-button" text="Pick Situation" />
+            <Button onAction="#onLoadSaveButtonClick" styleClass="menu-button" text="Load Saved Situation" />
+            <Button onAction="#onSettingsButtonClick" styleClass="menu-button" text="Settings" />
+            <Button onAction="#onLearnMoreButtonClick" styleClass="menu-button" text="Learn More" />
+            <Button onAction="#onQuitButtonClick" styleClass="menu-button" text="Quit" />
+        </VBox>
+
+        <StackPane>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#292a2c" height="289.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+            <Text fill="WHITE" text="Welcome to the Physics Explorer Simulator! A place where you can experiment with all types of physics! To select a situation to model, click the Pick Situation button. To load a previous situation you were experimenting with, click the Load Saved Situation button. To Customize your graphics, keybinds, or audio, click the Settings button. To Learn More and look for information on topics respective to their situation, click the Learn More button. To exit the simulator, click the Quit button." wrappingWidth="200.0" />
+        </StackPane>
+    </HBox>
+</VBox>

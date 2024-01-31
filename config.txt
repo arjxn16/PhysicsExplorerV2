@@ -1,0 +1,18 @@
+MouseSensitivity: 
+MoveRight1: 
+MoveRight2: 
+MoveUp2: 
+Inventory1: 
+MoveUp1: 
+Aim2: 
+Inventory2: 
+Aim1: 
+Volume: 53
+MoveLeft2: 
+MoveLeft1: 
+Fullscreen: true
+MoveDown2: 
+Shoot2: 
+MoveDown1: 
+Shoot1: 
+Resolution: 800 x 600

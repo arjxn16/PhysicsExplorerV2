@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+
+<?import java.net.URL?>
+
+<?import javafx.scene.control.Label?>
+<VBox id="mainMenu" alignment="CENTER" spacing="20"
+      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.base.game.physicsexplorer.MainMenu.PickSituationController">
+
+    <stylesheets>
+        <URL value="@styles.css"/>
+    </stylesheets>
+
+    <Label text="Pick Situation" styleClass="main-title"/>
+
+    <Button onAction="#onps1ButtonClick" text="Projectile Motion" styleClass="menu-button"/>
+    <Button onAction="#onps2ButtonClick" text="Gravity" styleClass="menu-button"/>
+    <Button onAction="#onps3ButtonClick" text="Collisions" styleClass="menu-button"/>
+    <Button onAction="#onps4ButtonClick" text="" styleClass="menu-button"/>
+    <Button onAction="#onReturnButtonClick" text="Return" styleClass="menu-button"/>
+</VBox>
