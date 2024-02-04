@@ -72,7 +72,7 @@ public class MainMenuController {
     @FXML
     protected void onpsButtonClick() {
         if (PickSituationScene == null) {
-            // Load the difficulty selection scene if not loaded
+            // Load the Pick Situation selection scene if not loaded
             PickSituationScene = pickSituation.createPickSituationScene(mainStage.getScene(), mainStage);
         }
         updateTitle("Pick Situation");

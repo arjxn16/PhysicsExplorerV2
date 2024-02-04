@@ -19,6 +19,6 @@
     <Button onAction="#onps1ButtonClick" text="Projectile Motion" styleClass="menu-button"/>
     <Button onAction="#onps2ButtonClick" text="Gravity" styleClass="menu-button"/>
     <Button onAction="#onps3ButtonClick" text="Collisions" styleClass="menu-button"/>
-    <Button onAction="#onps4ButtonClick" text="" styleClass="menu-button"/>
+    <Button onAction="#onps4ButtonClick" text="Wave Interference" styleClass="menu-button"/>
     <Button onAction="#onReturnButtonClick" text="Return" styleClass="menu-button"/>
 </VBox>
