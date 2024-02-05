@@ -1,18 +1,19 @@
-MouseSensitivity: 
-MoveRight1: 
-MoveRight2: 
-MoveUp2: 
-Inventory1: 
-MoveUp1: 
-Aim2: 
-Inventory2: 
-Aim1: 
-Volume: 53
-MoveLeft2: 
-MoveLeft1: 
 Fullscreen: true
-MoveDown2: 
-Shoot2: 
-MoveDown1: 
-Shoot1: 
 Resolution: 800 x 600
+Volume: 53
+MoveUp1: W
+MoveUp2: UP
+MoveDown1: S
+MoveDown2: DOWN
+MoveLeft1: A
+MoveLeft2: LEFT
+MoveRight1: D
+MoveRight2: RIGHT
+Shoot1: Left Click
+Shoot2: SPACE
+Aim1: Right Click
+Aim2: 
+Reload1: R
+Reload2: 
+Inventory1: TAB
+Inventory2: E

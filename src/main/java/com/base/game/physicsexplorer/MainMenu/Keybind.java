@@ -35,6 +35,7 @@ public class Keybind {
             return stage.getScene();
         } catch (IOException e) {
             // Handle IOException by printing the stack trace
+            System.out.println("x");
             e.printStackTrace();
             return null;
         }
