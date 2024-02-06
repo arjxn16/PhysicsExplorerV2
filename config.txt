@@ -1,9 +1,9 @@
 Fullscreen: true
-Resolution: 800 x 600
-Volume: 53
-MoveUp1: W
+Resolution: 1280 x 720
+Volume: 100
+MoveUp1: K
 MoveUp2: UP
-MoveDown1: S
+MoveDown1: F
 MoveDown2: DOWN
 MoveLeft1: A
 MoveLeft2: LEFT

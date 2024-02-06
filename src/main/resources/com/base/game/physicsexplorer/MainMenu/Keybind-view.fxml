@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <VBox id="mainMenu" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.base.game.physicsexplorer.MainMenu.KeybindController">
 
@@ -15,17 +16,13 @@
     </stylesheets>
 
     <Label fx:id="mainMenuLabel" prefHeight="66.0" prefWidth="192.0" styleClass="main-title" text="Keybinds" />
-    <GridPane alignment="CENTER" prefHeight="387.0" prefWidth="600.0">
+    <GridPane alignment="CENTER" prefHeight="289.0" prefWidth="599.0">
         <columnConstraints>
             <ColumnConstraints halignment="CENTER" />
             <ColumnConstraints halignment="CENTER" />
             <ColumnConstraints halignment="CENTER" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" />
-            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" />
-            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" />
-            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" />
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" />
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" />
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" />
@@ -51,6 +48,7 @@
 
         </children>
     </GridPane>
+   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="To customise your keybinds, press the keybind you would like to change, delete the current keybind by pressing the delete button and replace it by pressing the button you would like to bind instead." wrappingWidth="197.21630859375" />
 
     <Button alignment="CENTER" onAction="#onReturnButtonClick" prefWidth="250.0" styleClass="menu-button" text="Return" />
 </VBox>
