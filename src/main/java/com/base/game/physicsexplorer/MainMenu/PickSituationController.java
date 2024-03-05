@@ -29,22 +29,17 @@ public class PickSituationController {
 
     @FXML
     private void onps1ButtonClick() {
-        // Handle logic for selecting situation 1
+        // Handle logic for selecting situation 1 - Collisions
     }
 
     @FXML
     private void onps2ButtonClick() {
-        // Handle logic for selecting situation 2
+        // Handle logic for selecting situation 2 - Projectile Motion
     }
 
     @FXML
-    private void onps3ButtonClick() {
-        // Handle logic for selecting situation 3
-    }
-
-    @FXML
-    public void onps4ButtonClick() {
-        // Handle logic for selecting situation 4
+    public void onps3ButtonClick() {
+        // Handle logic for selecting situation 3 - Oscilloscope
     }
 
     // Event handler for the "Return" button
