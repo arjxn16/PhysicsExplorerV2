@@ -1,4 +1,4 @@
-package com.base.game.physicsexplorer.MainMenu;
+package Collisions;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;

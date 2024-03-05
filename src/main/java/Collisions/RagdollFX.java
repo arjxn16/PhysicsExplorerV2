@@ -1,4 +1,4 @@
-package com.base.game.physicsexplorer.MainMenu;
+package Collisions;
 
 import javafx.application.Application;
 import javafx.scene.Group;
