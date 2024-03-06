@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.Map;
+import java.util.List;
 
 public class RagdollFX extends Application {
 
@@ -24,8 +24,10 @@ public class RagdollFX extends Application {
         ragdoll = new Ragdoll(scene.getWidth(), scene.getHeight());
 
         // Add all body parts to the scene
-        Map<String, Ragdoll.BodyPart> bodyParts = ragdoll.getAllBodyParts();
-        root.getChildren().addAll(bodyParts.values());
+        List<Ragdoll.BodyPart> bodyParts = ragdoll.getAllBodyParts();
+        for (Ragdoll.BodyPart bodyPart : bodyParts) {
+            root.getChildren().add(bodyPart);
+        }
 
         primaryStage.setScene(scene);
         primaryStage.show();

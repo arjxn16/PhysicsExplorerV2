@@ -3,83 +3,121 @@ package Collisions;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ragdoll {
 
-    private Map<String, BodyPart> bodyParts;
-    private double sceneWidth;
-    private double sceneHeight;
+    private List<BodyPart> bodyParts;
 
     public Ragdoll(double sceneWidth, double sceneHeight) {
-        this.sceneWidth = sceneWidth;
-        this.sceneHeight = sceneHeight;
-        initializeBodyParts();
+        this.bodyParts = new ArrayList<>();
+        initializeBodyParts(sceneWidth, sceneHeight);
     }
 
-    private void initializeBodyParts() {
-        bodyParts = new HashMap<>();
-
+    private void initializeBodyParts(double sceneWidth, double sceneHeight) {
         double centerX = sceneWidth / 2;
         double centerY = sceneHeight - 100; // Adjust based on ground height
 
+        // Create a ground
+        BodyPart ground = createBodyPart(sceneWidth, 20, Color.GREEN);
+        ground.setTranslateY(sceneHeight - 20);
+        bodyParts.add(ground);
+
         // Create head
-        Rectangle head = createBodyPart(40, 40, Color.RED);
+        BodyPart head = createBodyPart(40, 40, Color.RED);
         head.setTranslateX(centerX - 20);
-        head.setTranslateY(centerY - 160); // Adjust for head position
-        bodyParts.put("head", new BodyPart(head));
+        head.setTranslateY(centerY - 160);
+        bodyParts.add(head);
 
         // Create chest
-        Rectangle chest = createBodyPart(80, 80, Color.BLUE);
+        BodyPart chest = createBodyPart(80, 80, Color.BLUE);
         chest.setTranslateX(centerX - 40);
         chest.setTranslateY(centerY - 120);
-        bodyParts.put("chest", new BodyPart(chest));
+        bodyParts.add(chest);
 
         // Create left arm
-        Rectangle leftArm = createBodyPart(20, 80, Color.GREEN);
+        BodyPart leftArm = createBodyPart(20, 80, Color.GREEN);
         leftArm.setTranslateX(centerX - 60);
         leftArm.setTranslateY(centerY - 120);
-        bodyParts.put("leftArm", new BodyPart(leftArm));
+        bodyParts.add(leftArm);
 
         // Create right arm
-        Rectangle rightArm = createBodyPart(20, 80, Color.GREEN);
+        BodyPart rightArm = createBodyPart(20, 80, Color.GREEN);
         rightArm.setTranslateX(centerX + 40);
         rightArm.setTranslateY(centerY - 120);
-        bodyParts.put("rightArm", new BodyPart(rightArm));
+        bodyParts.add(rightArm);
 
         // Create left leg
-        Rectangle leftLeg = createBodyPart(50, 200, Color.BLACK);
+        BodyPart leftLeg = createBodyPart(50, 200, Color.BLACK);
         leftLeg.setTranslateX(centerX - 45);
         leftLeg.setTranslateY(centerY + 60);
-        bodyParts.put("leftLeg", new BodyPart(leftLeg));
+        bodyParts.add(leftLeg);
 
         // Create right leg
-        Rectangle rightLeg = createBodyPart(45, 200, Color.BLACK);
+        BodyPart rightLeg = createBodyPart(45, 200, Color.BLACK);
         rightLeg.setTranslateX(centerX + 5);
         rightLeg.setTranslateY(centerY + 60);
-        bodyParts.put("rightLeg", new BodyPart(rightLeg));
+        bodyParts.add(rightLeg);
 
-        // Create a ground
-        Rectangle ground = createBodyPart(sceneWidth, 20, Color.GREEN);
-        ground.setTranslateY(sceneHeight - 20);
-        bodyParts.put("ground", new BodyPart(ground));
+        // Create joints
+        // For simplicity, connect head to chest, and chest to arms and legs
+        connectBodyParts(head, chest);
+        connectBodyParts(chest, leftArm);
+        connectBodyParts(chest, rightArm);
+        connectBodyParts(chest, leftLeg);
+        connectBodyParts(chest, rightLeg);
     }
 
-    public Map<String, BodyPart> getAllBodyParts() {
-        return new HashMap<>(bodyParts);
+    private BodyPart createBodyPart(double width, double height, Color color) {
+        return new BodyPart(width, height, color);
+    }
+
+    private void connectBodyParts(BodyPart partA, BodyPart partB) {
+        Joint joint = new Joint(1, Color.TRANSPARENT);
+        joint.setPivot(partA.getTranslateX() + partA.getWidth() / 2, partA.getTranslateY() + partA.getHeight() / 2);
+
+        partA.addJoint(joint); // Add joint to partA's joints list
+        partB.addJoint(joint); // Add joint to partB's joints list
+
+        partB.boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
+            partA.getJoints().forEach(j -> j.setPivot(newValue.getMaxX(), newValue.getMaxY()));
+        });
+    }
+
+
+
+    public List<BodyPart> getAllBodyParts() {
+        return new ArrayList<>(bodyParts);
     }
 
     public class BodyPart extends Rectangle {
 
-        public BodyPart(Rectangle rectangle) {
-            super(rectangle.getWidth(), rectangle.getHeight(), rectangle.getFill());
-            setTranslateX(rectangle.getTranslateX());
-            setTranslateY(rectangle.getTranslateY());
+        private List<Joint> joints;
+
+        public BodyPart(double width, double height, Color color) {
+            super(width, height, color);
+            this.joints = new ArrayList<>();
+        }
+
+        public void addJoint(Joint joint) {
+            joints.add(joint);
+        }
+
+        public List<Joint> getJoints() {
+            return new ArrayList<>(joints);
         }
     }
 
-    private Rectangle createBodyPart(double width, double height, Color color) {
-        return new Rectangle(width, height, color);
+    public class Joint extends Rectangle {
+
+        public Joint(double size, Color color) {
+            super(size, size, color);
+        }
+
+        public void setPivot(double x, double y) {
+            setTranslateX(x);
+            setTranslateY(y);
+        }
     }
 }
