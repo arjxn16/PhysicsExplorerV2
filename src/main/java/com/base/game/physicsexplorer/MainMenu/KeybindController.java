@@ -1,6 +1,5 @@
 package com.base.game.physicsexplorer.MainMenu;
 
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -29,10 +28,6 @@ public class KeybindController {
     private Button moveUp1Button, moveUp2Button, moveDown1Button, moveDown2Button;
     @FXML
     private Button moveLeft1Button, moveLeft2Button, moveRight1Button, moveRight2Button;
-    @FXML
-    private Button shoot1Button, shoot2Button, aim1Button, aim2Button, reload1Button, reload2Button;
-    @FXML
-    private Button inventory1Button, inventory2Button;
 
     // A map to associate each button with a specific action string.
     private final Map<Button, String> buttonToActionMap = new HashMap<>();
