@@ -10,10 +10,19 @@ public class Ragdoll {
 
     private List<BodyPart> bodyParts;
     private BodyPart ground;
+    private Box box; // New addition
 
     public Ragdoll(double sceneWidth, double sceneHeight) {
         this.bodyParts = new ArrayList<>();
         initializeBodyParts(sceneWidth, sceneHeight);
+
+        // Initialize the box
+        double boxWidth = 50;
+        double boxHeight = 50;
+        double boxPositionX = sceneWidth / 2 - 25; // Centered horizontally
+        double boxPositionY = sceneHeight / 2 - 25; // Centered vertically
+        double boxMass = 10; // Adjust as needed
+        box = new Box(boxWidth, boxHeight, boxPositionX, boxPositionY, boxMass);
     }
 
     private void initializeBodyParts(double sceneWidth, double sceneHeight) {
@@ -103,10 +112,14 @@ public class Ragdoll {
     public class BodyPart extends Rectangle {
 
         private List<Joint> joints;
+        private double velocityX;
+        private double velocityY;
 
         public BodyPart(double width, double height, Color color) {
             super(width, height, color);
             this.joints = new ArrayList<>();
+            this.velocityX = 0;
+            this.velocityY = 0;
         }
 
         public void addJoint(Joint joint) {
@@ -115,6 +128,32 @@ public class Ragdoll {
 
         public List<Joint> getJoints() {
             return new ArrayList<>(joints);
+        }
+
+        public double getVelocityX() {
+            return velocityX;
+        }
+
+        public void setVelocityX(double velocityX) {
+            this.velocityX = velocityX;
+        }
+
+        public double getVelocityY() {
+            return velocityY;
+        }
+
+        public void setVelocityY(double velocityY) {
+            this.velocityY = velocityY;
+        }
+
+        public void updatePosition() {
+            setTranslateX(getTranslateX() + velocityX);
+            setTranslateY(getTranslateY() + velocityY);
+        }
+
+        public void applyForce(double forceX, double forceY) {
+            velocityX += forceX;
+            velocityY += forceY;
         }
     }
 
@@ -127,6 +166,48 @@ public class Ragdoll {
         public void setPivot(double x, double y) {
             setTranslateX(x - getWidth() / 2);
             setTranslateY(y - getHeight() / 2);
+        }
+
+    }
+
+    public class Box extends Rectangle {
+        private double mass;
+        private double velocityX;
+        private double velocityY;
+
+        public Box(double width, double height, double x, double y, double mass) {
+            super(width, height);
+            setTranslateX(x);
+            setTranslateY(y);
+            this.mass = mass;
+            this.velocityX = 0;
+            this.velocityY = 0;
+            setFill(Color.GRAY); // You can change the color as needed
+        }
+
+        public double getMass() {
+            return mass;
+        }
+
+        public double getVelocityX() {
+            return velocityX;
+        }
+
+        public double getVelocityY() {
+            return velocityY;
+        }
+
+        public void setVelocityX(double velocityX) {
+            this.velocityX = velocityX;
+        }
+
+        public void setVelocityY(double velocityY) {
+            this.velocityY = velocityY;
+        }
+
+        public void updatePosition() {
+            setTranslateX(getTranslateX() + velocityX);
+            setTranslateY(getTranslateY() + velocityY);
         }
     }
 }
