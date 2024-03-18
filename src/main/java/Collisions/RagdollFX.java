@@ -1,5 +1,6 @@
 package Collisions;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -28,6 +29,15 @@ public class RagdollFX extends Application {
         for (Ragdoll.BodyPart bodyPart : bodyParts) {
             root.getChildren().add(bodyPart);
         }
+
+        // Create and start the animation timer for collision detection
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                ragdoll.checkCollisions();
+            }
+        };
+        timer.start();
 
         primaryStage.setScene(scene);
         primaryStage.show();

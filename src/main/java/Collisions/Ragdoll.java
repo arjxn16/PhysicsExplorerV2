@@ -9,6 +9,7 @@ import java.util.List;
 public class Ragdoll {
 
     private List<BodyPart> bodyParts;
+    private BodyPart ground;
 
     public Ragdoll(double sceneWidth, double sceneHeight) {
         this.bodyParts = new ArrayList<>();
@@ -20,7 +21,7 @@ public class Ragdoll {
         double centerY = sceneHeight - 100; // Adjust based on ground height
 
         // Create a ground
-        BodyPart ground = createBodyPart(sceneWidth, 20, Color.GREEN);
+        ground = createBodyPart(sceneWidth, 20, Color.GREEN);
         ground.setTranslateY(sceneHeight - 20);
         bodyParts.add(ground);
 
@@ -85,7 +86,15 @@ public class Ragdoll {
         });
     }
 
-
+    public void checkCollisions() {
+        for (BodyPart bodyPart : bodyParts) {
+            if (bodyPart != ground && bodyPart.getBoundsInParent().intersects(ground.getBoundsInParent())) {
+                // Adjust position to prevent body part from going under the ground
+                double overlap = bodyPart.getBoundsInParent().getMaxY() - ground.getBoundsInParent().getMinY();
+                bodyPart.setTranslateY(bodyPart.getTranslateY() - overlap);
+            }
+        }
+    }
 
     public List<BodyPart> getAllBodyParts() {
         return new ArrayList<>(bodyParts);
@@ -116,8 +125,8 @@ public class Ragdoll {
         }
 
         public void setPivot(double x, double y) {
-            setTranslateX(x);
-            setTranslateY(y);
+            setTranslateX(x - getWidth() / 2);
+            setTranslateY(y - getHeight() / 2);
         }
     }
 }

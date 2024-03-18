@@ -85,7 +85,7 @@ public class KeybindController {
         if (activeButton != null && !activeButton.equals(clickedButton)) {
             revertButtonToOriginalText(activeButton);
         }
-        setupInputListeners(); // This method is mentioned but not implemented in the provided code.
+        setupInputListeners();
         activeButton = clickedButton;
         activeButton.setText("Listening"); // Visual feedback that the application is ready to capture a new keybind.
         delayReadyToCaptureClick(); // Delays setting the flag to capture clicks, preventing immediate capture.
