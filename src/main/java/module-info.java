@@ -1,8 +1,6 @@
-module com.base.game.retrorampage {
+module com.base.game.physicsexplorer {
     requires javafx.controls;
     requires javafx.fxml;
     exports com.base.game.physicsexplorer.MainMenu;
     opens com.base.game.physicsexplorer.MainMenu to javafx.fxml;
-    exports ProjectileMotion;
-    opens ProjectileMotion to javafx.fxml;
 }

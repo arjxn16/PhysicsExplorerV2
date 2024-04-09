@@ -4,9 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class PickSituationController {
 
-
+    // Instances of various scenes and functionalities for the main menu
     private Scene previousScene;
     private Stage stage; // Add a stage variable
 
@@ -27,20 +29,14 @@ public class PickSituationController {
         }
     }
 
-    @FXML
-    private void onps1ButtonClick() {
-        // Handle logic for selecting situation 1 - Collisions
-    }
 
     @FXML
-    private void onps2ButtonClick() {
-        // Handle logic for selecting situation 2 - Projectile Motion
+    private void onps2ButtonClick()  {
+
+
     }
 
-    @FXML
-    public void onps3ButtonClick() {
-        // Handle logic for selecting situation 3 - Oscilloscope
-    }
+
 
     // Event handler for the "Return" button
     @FXML

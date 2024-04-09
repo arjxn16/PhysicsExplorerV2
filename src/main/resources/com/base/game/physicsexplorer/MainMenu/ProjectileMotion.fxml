@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="800" prefHeight="600" fx:controller="com.base.game.physicsexplorer.MainMenu.ProjectileMotionFXController">
+    <!-- Divide the layout into two columns -->
+    <columnConstraints>
+        <ColumnConstraints percentWidth="60"/> <!-- 60% for simulation -->
+        <ColumnConstraints percentWidth="40"/> <!-- 40% for UI -->
+    </columnConstraints>
+
+    <!-- Divide the UI section into two rows -->
+    <rowConstraints>
+        <RowConstraints percentHeight="50"/> <!-- 50% for buttons -->
+        <RowConstraints percentHeight="50"/> <!-- 50% for text -->
+    </rowConstraints>
+
+    <!-- Simulation Area (Left Side) -->
+    <VBox GridPane.columnIndex="0" GridPane.rowSpan="2" style="-fx-background-color: lightgray;">
+        <!-- Add simulation components here -->
+    </VBox>
+
+    <!-- UI Area (Right Side) -->
+    <VBox GridPane.columnIndex="1">
+        <padding>
+            <Insets topRightBottomLeft="10"/>
+        </padding>
+
+        <!-- Buttons (Top Half) -->
+        <VBox GridPane.rowIndex="0" spacing="10">
+            <Button text="Button 1"/>
+            <Button text="Button 2"/>
+        </VBox>
+
+        <!-- Text Area (Bottom Half) -->
+        <VBox GridPane.rowIndex="1">
+            <TextArea VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </VBox>
+</GridPane>

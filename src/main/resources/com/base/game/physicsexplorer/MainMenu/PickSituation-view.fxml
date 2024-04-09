@@ -16,8 +16,9 @@
 
     <Label text="Pick Situation" styleClass="main-title"/>
 
-    <Button onAction="#onps1ButtonClick" text="ProjectileMotion" styleClass="menu-button"/>
+
     <Button onAction="#onps2ButtonClick" text="Projectile Motion" styleClass="menu-button"/>
-    <Button onAction="#onps3ButtonClick" text="Oscilloscope" styleClass="menu-button"/>
+
+
     <Button onAction="#onReturnButtonClick" text="Return" styleClass="menu-button"/>
 </VBox>
