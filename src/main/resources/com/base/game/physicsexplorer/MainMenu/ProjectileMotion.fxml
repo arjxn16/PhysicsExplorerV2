@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
@@ -9,6 +10,7 @@
 
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
+
 <GridPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="800" prefHeight="600" fx:controller="com.base.game.physicsexplorer.MainMenu.ProjectileMotionFXController">
     <!-- Divide the layout into two columns -->
     <columnConstraints>
@@ -25,6 +27,7 @@
     <!-- Simulation Area (Left Side) -->
     <VBox GridPane.columnIndex="0" GridPane.rowSpan="2" style="-fx-background-color: lightgray;">
         <!-- Add simulation components here -->
+        <Canvas fx:id="simulationCanvas"/>
     </VBox>
 
     <!-- UI Area (Right Side) -->
@@ -35,7 +38,7 @@
 
         <!-- Buttons (Top Half) -->
         <VBox GridPane.rowIndex="0" spacing="10">
-            <Button text="Button 1"/>
+            <Button text="Button 1" onAction="#startSimulation"/>
             <Button text="Button 2"/>
         </VBox>
 
