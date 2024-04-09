@@ -3,6 +3,6 @@ module com.base.game.retrorampage {
     requires javafx.fxml;
     exports com.base.game.physicsexplorer.MainMenu;
     opens com.base.game.physicsexplorer.MainMenu to javafx.fxml;
-    exports Collisions;
-    opens Collisions to javafx.fxml;
+    exports ProjectileMotion;
+    opens ProjectileMotion to javafx.fxml;
 }
