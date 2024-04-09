@@ -4,57 +4,70 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.util.converter.NumberStringConverter;
 
 public class ProjectileMotionFXController {
+
+    public ToggleGroup massToggleGroup2;
+    public ToggleGroup massToggleGroup1;
+    public Button startSimulationButton;
+    public Button stopSimulationButton;
+    public Button resetSimulationButton;
+    @FXML
+    private TextField initialHeightTextField;
+
+    @FXML
+    private TextField initialVelocityTextField;
+
+    @FXML
+    private TextField initialAngleTextField;
+
+    @FXML
+    private RadioButton lightMassRadioButton;
+
+    @FXML
+    private RadioButton heavyMassRadioButton;
+
+    @FXML
+    private RadioButton earthGravityRadioButton;
+
+    @FXML
+    private RadioButton marsGravityRadioButton;
+
+    @FXML
+    private RadioButton mercuryGravityRadioButton;
+
+    @FXML
+    private RadioButton saturnGravityRadioButton;
+
+
     @FXML
     private ToggleGroup gravityToggleGroup;
     private ToggleGroup massToggleGroup;
 
-
     @FXML
     private Canvas simulationCanvas;
 
-    // Add any other UI components here
-
-    // Initialize method (you can use @FXML initialize() or constructor)
-
-    // Method to draw the projectile motion simulation on the canvas
-    private void drawSimulation() {
-        GraphicsContext gc = simulationCanvas.getGraphicsContext2D();
-
-        // Clear the canvas
-        gc.clearRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
-
-        // Set the background color
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
-
-        // Draw your simulation graphics here
-        // Example: draw a line representing the trajectory of the projectile
-        gc.setStroke(Color.BLUE);
-        gc.setLineWidth(2);
-        gc.strokeLine(50, 200, 750, 200); // Example line from (50, 200) to (750, 200)
-    }
-
-    // Method to handle button clicks or other events to start the simulation
-    private boolean simulationRunning = false; //defines the simulation state
+    private Projectile projectile;
+    private boolean simulationRunning = false;
 
     @FXML
     private void startSimulation() {
         if (!simulationRunning) {
             simulationRunning = true;
-            // Add logic to start the simulation
             System.out.println("Simulation started");
             drawSimulation(); // Call drawSimulation to update the canvas
         } else {
             System.out.println("Simulation is already running");
         }
     }
-
 
     @FXML
     private void stopSimulation() {
@@ -69,14 +82,19 @@ public class ProjectileMotionFXController {
 
     @FXML
     private void resetSimulation() {
-        // Add logic to reset the simulation
-        if (simulationRunning) {
-            // If the simulation is running, stop it first
-            stopSimulation();
-        }
-        // Then add logic to reset the simulation
+        // Stop the simulation if it's running
+        stopSimulation();
+
+        // Reset the projectile to default values
+        projectile.resetToDefault();
+
+        // Clear the canvas
+        GraphicsContext gc = simulationCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
+
         System.out.println("Simulation reset");
     }
+
 
     public void onKeyPressed(KeyEvent keyEvent) {
     }
@@ -93,12 +111,159 @@ public class ProjectileMotionFXController {
     public void onRollbackClick(ActionEvent actionEvent) {
     }
 
-    public void onStartSimulationClick(ActionEvent actionEvent) {
-    }
+
 
     public void onStepForwardClick(ActionEvent actionEvent) {
     }
 
     public void onReturnToHomeButtonClick(ActionEvent actionEvent) {
     }
+
+    private void drawSimulation() {
+        GraphicsContext gc = simulationCanvas.getGraphicsContext2D();
+
+        // Clear the canvas
+        gc.clearRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
+
+        // Set the background color
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
+
+        // Draw the trajectory line
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(1.0);
+
+        double initialX = 0; // Starting X position
+        double initialY = calculateProjectileYPosition(); // Initial Y position
+        double finalX = simulationCanvas.getWidth(); // Ending X position (end of canvas)
+        double finalY = calculateProjectileYPosition(); // Y position remains constant for horizontal trajectory
+
+        gc.strokeLine(initialX, initialY, finalX, finalY);
+
+        // Calculate the position of the projectile and draw it
+        double projectileX = calculateProjectileXPosition();
+        double projectileY = calculateProjectileYPosition();
+        double radius = 5; // Radius of the projectile circle
+
+        gc.setFill(Color.RED);
+        gc.fillOval(projectileX - radius, projectileY - radius, 2 * radius, 2 * radius);
+    }
+
+
+    // Method to calculate the X position of the projectile
+    private double calculateProjectileXPosition() {
+        double canvasWidth = simulationCanvas.getWidth(); // Width of the canvas
+        double velocityX = projectile.getInitialVelocity() * Math.cos(Math.toRadians(projectile.getInitialAngle())); // X component of velocity
+
+        // Calculate time based on distance traveled horizontally (X direction)
+        double time = canvasWidth / velocityX;
+
+        double initialX = 0; // Starting X position, adjust as needed
+        return initialX + velocityX * time;
+    }
+
+    private double calculateProjectileYPosition() {
+        double initialY = simulationCanvas.getHeight() - projectile.getInitialHeight(); // Initial Y position
+        double velocityX = projectile.getInitialVelocity() * Math.cos(Math.toRadians(projectile.getInitialAngle())); // X component of velocity
+        double canvasWidth = simulationCanvas.getWidth(); // Width of the canvas
+        double time = canvasWidth / velocityX;
+        double velocityY = -projectile.getInitialVelocity() * Math.sin(Math.toRadians(projectile.getInitialAngle())); // Y component of velocity
+        double g = getGravityValue(projectile.getGravity()); // Get gravity value based on selected gravity
+        double angleRadians = Math.toRadians(projectile.getInitialAngle()); // Convert angle to radians
+        double velocityXT = projectile.getInitialVelocity() * Math.cos(angleRadians); // Horizontal component of initial velocity
+        double velocityYT = projectile.getInitialVelocity() * Math.sin(angleRadians); // Vertical component of initial velocity
+
+        return initialY + velocityYT * time + 0.5 * g * time * time; // Calculate Y position using projectile motion equation with angle
+    }
+
+
+    // Method to get gravity value based on selected gravity
+    private double getGravityValue(String gravity) {
+        if (gravity != null) {
+            switch (gravity) {
+                case "Earth":
+                    return 9.81; // Standard gravity on Earth (m/s^2)
+                case "Mars":
+                    return 3.71; // Gravity on Mars (m/s^2)
+                case "Mercury":
+                    return 3.7; // Gravity on Mercury (m/s^2)
+                case "Saturn":
+                    return 10.44; // Gravity on Saturn (m/s^2)
+                default:
+                    return 9.81; // Default to Earth gravity if gravity is not recognized
+            }
+        } else {
+            // Handle the case when gravity is null (e.g., provide a default value)
+            return 9.81; // Default to Earth gravity if gravity is null
+        }
+    }
+
+
+
+    @FXML
+    public void initialize() {
+        projectile = new Projectile();
+
+        // Bind UI components to Projectile properties
+        initialHeightTextField.textProperty().bindBidirectional(projectile.initialHeightProperty(), new NumberStringConverter());
+        initialVelocityTextField.textProperty().bindBidirectional(projectile.initialVelocityProperty(), new NumberStringConverter());
+        initialAngleTextField.textProperty().bindBidirectional(projectile.initialAngleProperty(), new NumberStringConverter());
+
+        // Add listeners to update the projectile when mass and gravity change
+        lightMassRadioButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                projectile.setMass(1.0); // Set light mass
+            }
+        });
+
+        heavyMassRadioButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                projectile.setMass(10.0); // Set heavy mass
+            }
+        });
+
+        earthGravityRadioButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                projectile.setGravity("Earth"); // Set Earth gravity
+            }
+        });
+
+        marsGravityRadioButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                projectile.setGravity("Mars"); // Set Mars gravity
+            }
+        });
+
+        mercuryGravityRadioButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                projectile.setGravity("Mercury"); // Set Mercury gravity
+            }
+        });
+
+        saturnGravityRadioButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                projectile.setGravity("Saturn"); // Set Saturn gravity
+            }
+        });
+
+        // Other initialization code...
+    }
+
+    @FXML
+    private void onStartSimulationButtonClick(ActionEvent event) {
+        startSimulation();
+    }
+
+    @FXML
+    private void onStopSimulationButtonClick(ActionEvent event) {
+        stopSimulation();
+    }
+
+    @FXML
+    private void onResetSimulationButtonClick(ActionEvent event) {
+        resetSimulation();
+    }
+
+
+
 }

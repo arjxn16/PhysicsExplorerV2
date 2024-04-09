@@ -94,4 +94,15 @@ public class Projectile {
     public StringProperty gravityProperty() {
         return gravity;
     }
-}
+
+    public void resetToDefault() {
+            // Set all properties to their default values
+            initialHeight.set(0);
+            initialVelocity.set(0);
+            initialAngle.set(0);
+            mass.set(1.0); // Assuming default mass is 1.0 kg
+            gravity.set("Earth"); // Assuming default gravity is Earth
+        }
+
+    }
+
