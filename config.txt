@@ -1,9 +1,9 @@
 Fullscreen: true
 Resolution: 1280 x 720
 Volume: 100
-MoveUp1: K
+MoveUp1: W
 MoveUp2: UP
-MoveDown1: F
+MoveDown1: S
 MoveDown2: DOWN
 MoveLeft1: A
 MoveLeft2: LEFT

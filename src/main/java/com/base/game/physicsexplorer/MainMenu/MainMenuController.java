@@ -22,7 +22,6 @@ public class MainMenuController {
 
     // Instances of various scenes and functionalities for the main menu
     private final PickSituation pickSituation = new PickSituation();
-    private final LoadSavedSituation loadSavedSituation = new LoadSavedSituation();
     private final Settings settings = new Settings();
     private final LearnMore learnMore = new LearnMore();
     private final Quit quit = new Quit();
@@ -80,15 +79,7 @@ public class MainMenuController {
     }
 
     // Event handler for the "Load Saved Situation" button
-    @FXML
-    protected void onLoadSaveButtonClick() {
-        if (loadSaveScene == null) {
-            // Load the Load Game scene if not loaded
-            loadSaveScene = loadSavedSituation.createLoadSaveScene(mainStage.getScene(), mainStage);
-        }
-        updateTitle("Select Situation Save");
-        mainStage.setScene(loadSaveScene);
-    }
+
 
     // Event handler for the "Settings" button
     @FXML

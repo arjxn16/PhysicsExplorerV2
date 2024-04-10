@@ -25,7 +25,6 @@
     <HBox spacing="20.0">
         <VBox spacing="10.0">
             <Button onAction="#onpsButtonClick" styleClass="menu-button" text="Pick Situation" />
-            <Button onAction="#onLoadSaveButtonClick" styleClass="menu-button" text="Load Saved Situation" />
             <Button onAction="#onSettingsButtonClick" styleClass="menu-button" text="Settings" />
             <Button onAction="#onLearnMoreButtonClick" styleClass="menu-button" text="Learn More" />
             <Button onAction="#onQuitButtonClick" styleClass="menu-button" text="Quit" />
