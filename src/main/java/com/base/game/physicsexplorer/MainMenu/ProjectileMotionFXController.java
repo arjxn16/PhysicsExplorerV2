@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -247,7 +244,53 @@ public class ProjectileMotionFXController {
         });
 
         // Other initialization code...
+
+        // Add event listeners to text fields for input validation
+        initialHeightTextField.setOnAction(event -> validateInput(initialHeightTextField, "Initial height"));
+        initialVelocityTextField.setOnAction(event -> validateInput(initialVelocityTextField, "Initial velocity"));
+        initialAngleTextField.setOnAction(event -> validateInput(initialAngleTextField, "Initial angle"));
     }
+
+    // Method to validate input for a text field
+    private void validateInput(TextField textField, String fieldName) {
+        String inputText = textField.getText().trim();
+        if (inputText.isEmpty()) {
+            textField.setStyle("-fx-border-color: red;");
+            showAlert("Enter a valid number for " + fieldName);
+            textField.clear(); // Clear the text field
+            return;
+        }
+
+        try {
+            double value = Double.parseDouble(inputText);
+            // Check if value is negative
+            if (value < 0) {
+                textField.setStyle("-fx-border-color: red;");
+                showAlert("Enter a non-negative value for " + fieldName);
+                textField.clear(); // Clear the text field
+            } else {
+                // Reset border color if input is valid
+                textField.setStyle("");
+            }
+        } catch (NumberFormatException e) {
+            textField.setStyle("-fx-border-color: red;");
+            showAlert("Enter a valid number for " + fieldName);
+            textField.clear(); // Clear the text field
+        }
+    }
+
+
+
+
+    // Method to show an alert dialog
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Invalid Input");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     @FXML
     private void onStartSimulationButtonClick(ActionEvent event) {
