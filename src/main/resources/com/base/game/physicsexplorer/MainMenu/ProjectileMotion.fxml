@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Hyperlink?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#onKeyPressed" prefHeight="720.0" prefWidth="1280.0" styleClass="main-theme" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.base.game.physicsexplorer.MainMenu.ProjectileMotionFXController">
     <stylesheets>
         <URL value="@styles.css" />
@@ -24,7 +25,7 @@
             <children>
                 <BorderPane prefHeight="700.0" prefWidth="1000.0">
                     <center>
-                        <Canvas fx:id="simulationCanvas" height="480.0" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" width="720.0" BorderPane.alignment="CENTER" />
+                        <Canvas fx:id="simulationCanvas" height="480.0" width="720.0" BorderPane.alignment="CENTER" />
                     </center>
                 </BorderPane>
                 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="250.0" styleClass="simulation-container">
@@ -80,9 +81,9 @@
                                     </VBox>
                                 </HBox>
                                 <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="238.0" spacing="10.0" styleClass="small-text">
-                                    <Button fx:id="startSimulationButton" text="Start Simulation" onAction="#onStartSimulationButtonClick" />
-                                    <Button fx:id="stopSimulationButton" text="Stop Simulation" onAction="#onStopSimulationButtonClick" />
-                                    <Button fx:id="resetSimulationButton" text="Reset Simulation" onAction="#onResetSimulationButtonClick" />
+                                    <Button fx:id="startSimulationButton" onAction="#onStartSimulationButtonClick" text="Start Simulation" />
+                                    <Button fx:id="stopSimulationButton" onAction="#onStopSimulationButtonClick" text="Stop Simulation" />
+                                    <Button fx:id="resetSimulationButton" onAction="#onResetSimulationButtonClick" text="Reset Simulation" />
                                 </HBox>
 
                             </children>
@@ -92,16 +93,26 @@
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                             <children>
-                                <VBox alignment="CENTER" layoutX="-3.0" prefHeight="234.0" prefWidth="240.0">
-                                    <children>
-                                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onReturnToHomeButtonClick" prefHeight="20.0" prefWidth="240.0" styleClass="menu-button" text="Return To Home" />
-                                    </children>
+                                <VBox alignment="CENTER" layoutY="-174.0" prefHeight="408.0" prefWidth="240.0">
                                     <padding>
                                         <Insets left="3.0" />
                                     </padding>
+                                    <children>
+                                        <Label prefHeight="400.0" prefWidth="237.0" wrapText="true">
+                                            Adjust initial height, velocity, and angle to observe how they influence the trajectory of a projectile. Projectile motion involves objects moving through the air under the influence of gravity. Key elements include initial height, velocity, angle, and gravity. Projectile motion finds applications in sports, engineering, and military technology. It's essential for optimizing athletic performance, designing structures, and military tactics. Experiment with different parameters to observe their effects. Pay attention to the angle of projection for significant changes. Explore how varying gravitational accelerations impact trajectories.
+                                        </Label>
+                                        <Hyperlink text="[Physics Classroom: Projectile Motion]" onAction="#openPhysicsClassroom"/>
+                                        <Hyperlink text="[NASA: Gravity and Motion]" onAction="#openNASA"/>
+                                    </children>
+
+
+
+
+
                                 </VBox>
                             </children>
                         </Pane>
+                            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onReturnToHomeButtonClick" prefHeight="20.0" prefWidth="240.0" styleClass="menu-button" text="Return To Home" />
                     </children>
                 </VBox>
             </children>

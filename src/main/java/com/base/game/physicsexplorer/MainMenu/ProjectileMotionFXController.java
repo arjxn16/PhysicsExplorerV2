@@ -10,6 +10,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.util.converter.NumberStringConverter;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class ProjectileMotionFXController {
 
     public ToggleGroup massToggleGroup2;
@@ -43,11 +47,6 @@ public class ProjectileMotionFXController {
 
     @FXML
     private RadioButton saturnGravityRadioButton;
-
-
-    @FXML
-    private ToggleGroup gravityToggleGroup;
-    private ToggleGroup massToggleGroup;
 
     @FXML
     private Canvas simulationCanvas;
@@ -127,23 +126,6 @@ public class ProjectileMotionFXController {
         gc.fillRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
 
         // Draw the trajectory line
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(1.0);
-
-        double initialX = 0; // Starting X position
-        double initialY = calculateProjectileYPosition(); // Initial Y position
-        double finalX = simulationCanvas.getWidth(); // Ending X position (end of canvas)
-        double finalY = calculateProjectileYPosition(); // Y position remains constant for horizontal trajectory
-
-        gc.strokeLine(initialX, initialY, finalX, finalY);
-
-        // Calculate the position of the projectile and draw it
-        double projectileX = calculateProjectileXPosition();
-        double projectileY = calculateProjectileYPosition();
-        double radius = 5; // Radius of the projectile circle
-
-        gc.setFill(Color.RED);
-        gc.fillOval(projectileX - radius, projectileY - radius, 2 * radius, 2 * radius);
     }
 
 
@@ -252,6 +234,7 @@ public class ProjectileMotionFXController {
     }
 
     // Method to validate input for a text field
+// Method to validate input for a text field
     private void validateInput(TextField textField, String fieldName) {
         String inputText = textField.getText().trim();
         if (inputText.isEmpty()) {
@@ -268,6 +251,10 @@ public class ProjectileMotionFXController {
                 textField.setStyle("-fx-border-color: red;");
                 showAlert("Enter a non-negative value for " + fieldName);
                 textField.clear(); // Clear the text field
+            } else if (value > 1000) { // Adjust the upper limit as needed
+                textField.setStyle("-fx-border-color: red;");
+                showAlert("Please enter a smaller value for " + fieldName);
+                textField.clear(); // Clear the text field
             } else {
                 // Reset border color if input is valid
                 textField.setStyle("");
@@ -278,6 +265,7 @@ public class ProjectileMotionFXController {
             textField.clear(); // Clear the text field
         }
     }
+
 
 
 
@@ -308,5 +296,20 @@ public class ProjectileMotionFXController {
     }
 
 
+    public void openPhysicsClassroom(ActionEvent actionEvent) {
+        openURL("https://www.physicsclassroom.com/class/vectors/Lesson-2/Horizontal-and-Vertical-Components-of-Velocity");
+    }
 
+    public void openNASA(ActionEvent actionEvent) {
+        openURL("https://www.grc.nasa.gov/www/k-12/rocket/rktsimul.html");
+    }
+
+    private void openURL(String url) {
+        try {
+            URI uri = new URI(url);
+            java.awt.Desktop.getDesktop().browse(uri);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
@@ -51,8 +52,19 @@ public class SoundController {
     }
 
     public void onVolumeTextFieldChanged(KeyEvent event) {
-        if (event.getCode().isDigitKey() || event.getCode().isArrowKey()) {
-            syncSliderWithTextField();
+        if (event.getCode().isDigitKey() || event.getCode().isArrowKey() || event.getCode() == KeyCode.BACK_SPACE || event.getCode() == KeyCode.DELETE) {
+          try {
+              int value = Integer.parseInt(volumeTextField.getText()); //convert text field to integer
+              if (value < 0){
+                  volumeSlider.setValue(0);  // set slider to minimum value if below range
+              } else if (value > 100) {
+                  volumeSlider.setValue(100); // set slider to maximum if value is above range
+              } else {
+                  volumeSlider.setValue(value); // set slider to entered value if value within range
+              }
+          } catch (NumberFormatException e) {
+              volumeTextField.setText(String.valueOf((int) volumeSlider.getValue())); // reset to sliders value on invalid input
+          }
         }
     }
 
@@ -93,5 +105,7 @@ public class SoundController {
             stage.setScene(previousScene);
             stage.setTitle("Main Menu");
         }
+
     }
+
 }
