@@ -1,7 +1,9 @@
 package com.base.game.physicsexplorer.MainMenu;
 
-public class LinkedList<T> {
+public class CircularLinkedList<T> {
     private Node<T> head; // head of list
+    private Node<T> tail; // tail of list
+    private int size; // number of elements in the list
 
     // Node class
     private static class Node<T> {
@@ -16,33 +18,31 @@ public class LinkedList<T> {
     }
 
     // Method to add a new node at the end of the list
-    public void add(T data) {
+    public void addLast(T data) {
         Node<T> newNode = new Node<>(data);
 
         if (head == null) {
             head = newNode;
+            tail = newNode;
+            newNode.next = head; // circular link
         } else {
-            Node<T> current = head;
-            while (current.next != null) {
-                current = current.next;
-            }
-            current.next = newNode;
+            tail.next = newNode;
+            tail = newNode;
+            tail.next = head; // circular link
         }
+        size++;
     }
 
     // Method to get the size of the list
     public int size() {
-        int count = 0;
-        Node<T> current = head;
-        while (current != null) {
-            count++;
-            current = current.next;
-        }
-        return count;
+        return size;
     }
 
     // Method to get the element at a specific position
     public T get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
         Node<T> current = head;
         int count = 0;
         while (current != null) {
@@ -58,18 +58,12 @@ public class LinkedList<T> {
     // Method to clear the list
     public void clear() {
         head = null;
+        tail = null;
+        size = 0;
     }
-    public void addLast(T data) {
-        Node<T> newNode = new Node<>(data);
 
-        if (head == null) {
-            head = newNode;
-        } else {
-            Node<T> current = head;
-            while (current.next != null) {
-                current = current.next;
-            }
-            current.next = newNode;
-        }
+    // Method to add a new node with a double value
+    public void add(double data) {
+        addLast((T) Double.valueOf(data));
     }
 }

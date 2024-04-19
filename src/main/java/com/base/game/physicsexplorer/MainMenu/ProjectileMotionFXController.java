@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -16,12 +15,10 @@ import javafx.util.converter.NumberStringConverter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ProjectileMotionFXController {
 
+    private AnimationTimer animationTimer;
     private static final double CANVAS_WIDTH = 720 ;
     private static final double CANVAS_HEIGHT = 480;
     public ToggleGroup massToggleGroup2;
@@ -31,34 +28,24 @@ public class ProjectileMotionFXController {
     public Button resetSimulationButton;
     @FXML
     private TextField initialHeightTextField;
-
     @FXML
     private TextField initialVelocityTextField;
-
     @FXML
     private TextField initialAngleTextField;
-
     @FXML
     private RadioButton lightMassRadioButton;
-
     @FXML
     private RadioButton heavyMassRadioButton;
-
     @FXML
     private RadioButton earthGravityRadioButton;
-
     @FXML
     private RadioButton marsGravityRadioButton;
-
     @FXML
     private RadioButton mercuryGravityRadioButton;
-
     @FXML
     private RadioButton saturnGravityRadioButton;
-
     @FXML
     private Canvas simulationCanvas;
-
     private Projectile projectile;
     private boolean simulationRunning = false;
     private long lastUpdate = 0;
@@ -68,6 +55,7 @@ private boolean isSimulationPaused = false;
     private double projectileY;
     private double pausedX;
     private double pausedY;
+    private EventQueue eventQueue = new EventQueue();
 
     private void startSimulation() {
         if (!simulationRunning) {
@@ -125,20 +113,27 @@ private boolean isSimulationPaused = false;
 
     private void resetSimulation() {
         if (simulationCanvas != null) {
-            // Clear the canvas
-            GraphicsContext gc = simulationCanvas.getGraphicsContext2D();
-            gc.clearRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
+            simulationCanvas.getGraphicsContext2D().clearRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
+            simulationCanvas = null; // Sets canvas to null
         }
+
+        simulationRunning = false; // Stop the simulation
+        isSimulationPaused = false; // reset the pause state
 
         // Reset parameters
         projectile.resetToDefault();
         pausedX = 0;
         pausedY = 0;
-        isSimulationPaused = false;
 
         // Clear previous positions
         previousXPositions.clear();
         previousYPositions.clear();
+
+        // Stop and reset the AnimationTimer
+        if (animationTimer != null) {
+            animationTimer.stop();
+            animationTimer = null;
+        }
 
         System.out.println("Simulation reset");
     }
@@ -158,10 +153,13 @@ private boolean isSimulationPaused = false;
         }
     }
 
-    private com.base.game.physicsexplorer.MainMenu.LinkedList<Double> previousXPositions = new com.base.game.physicsexplorer.MainMenu.LinkedList<>();
-    private com.base.game.physicsexplorer.MainMenu.LinkedList<Double> previousYPositions = new com.base.game.physicsexplorer.MainMenu.LinkedList<>();
+    private CircularLinkedList<Double> previousXPositions = new CircularLinkedList<>();
+    private CircularLinkedList<Double> previousYPositions = new CircularLinkedList<>();
 
     private void drawSimulation(double projectileX, double projectileY) {
+        if (simulationCanvas == null) {
+            return;
+        }
         GraphicsContext gc = simulationCanvas.getGraphicsContext2D();
 
         // Clear the canvas
@@ -304,6 +302,27 @@ private boolean isSimulationPaused = false;
         initialAngleTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             validateInput(initialAngleTextField, "Initial angle");
         });
+
+        // Add event queue processing
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                processEvents();
+            }
+        }.start();
+    }
+
+    private void processEvents() {
+        while (!eventQueue.isEmpty()) {
+            ActionEvent event = eventQueue.remove();
+            if (event.getTarget() == startSimulationButton) {
+                startSimulation();
+            } else if (event.getTarget() == stopSimulationButton) {
+                stopSimulation();
+            } else if (event.getTarget() == resetSimulationButton) {
+                resetSimulation();
+            }
+        }
     }
 
   // Method to validate input for a text field
@@ -357,17 +376,17 @@ private boolean isSimulationPaused = false;
 
     @FXML
     private void onStartSimulationButtonClick(ActionEvent event) {
-        startSimulation();
+        eventQueue.add(event);
     }
 
     @FXML
     private void onStopSimulationButtonClick(ActionEvent event) {
-        stopSimulation();
+        eventQueue.add(event);
     }
 
     @FXML
     private void onResetSimulationButtonClick(ActionEvent event) {
-        resetSimulation();
+        eventQueue.add(event);
     }
 
 
