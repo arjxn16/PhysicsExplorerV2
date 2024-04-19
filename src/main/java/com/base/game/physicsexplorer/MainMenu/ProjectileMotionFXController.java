@@ -158,8 +158,8 @@ private boolean isSimulationPaused = false;
         }
     }
 
-    private LinkedList<Double> previousXPositions = new LinkedList<>();
-    private LinkedList<Double> previousYPositions = new LinkedList<>();
+    private com.base.game.physicsexplorer.MainMenu.LinkedList<Double> previousXPositions = new com.base.game.physicsexplorer.MainMenu.LinkedList<>();
+    private com.base.game.physicsexplorer.MainMenu.LinkedList<Double> previousYPositions = new com.base.game.physicsexplorer.MainMenu.LinkedList<>();
 
     private void drawSimulation(double projectileX, double projectileY) {
         GraphicsContext gc = simulationCanvas.getGraphicsContext2D();
