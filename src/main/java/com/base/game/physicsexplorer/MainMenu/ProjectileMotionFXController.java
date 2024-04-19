@@ -138,12 +138,8 @@ private boolean isSimulationPaused = false;
         previousXPositions.clear();
         previousYPositions.clear();
 
-        // Reinitialize the canvas
-        simulationCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-
         System.out.println("Simulation reset");
     }
-
     public void onReturnToHomeButtonClick(ActionEvent actionEvent) {
     }
 
