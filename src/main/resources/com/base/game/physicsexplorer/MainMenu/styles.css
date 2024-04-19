@@ -1,7 +1,7 @@
 #mainMenu {
     -fx-background-color: rgb(38, 38, 38);
-    -fx-background-image: url('background.jpg'); /* Replace 'background.jpg' with your image file path */
-    -fx-background-size: cover; /* Adjust as needed */
+    -fx-background-image: url('background.jpg');
+    -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
 
 }

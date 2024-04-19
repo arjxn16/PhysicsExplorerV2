@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
@@ -56,6 +57,13 @@ private boolean isSimulationPaused = false;
     private double pausedX;
     private double pausedY;
     private EventQueue eventQueue = new EventQueue();
+
+
+private Image currentImage;
+    private Image earthImage = imageopenURL("earth.jpg");
+    private Image mercuryImage = imageopenURL("mercury.jpg");
+    private Image marsImage = imageopenURL("mars.jpg");
+    private Image saturnImage = imageopenURL("saturn.jpg");
 
     private void startSimulation() {
         if (!simulationRunning) {
@@ -165,9 +173,8 @@ private boolean isSimulationPaused = false;
         // Clear the canvas
         gc.clearRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
 
-        // Set the background color
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
+        // Draw the background image
+        gc.drawImage(currentImage, 0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
 
         // Draw the projectile
         double projectileSize = 10; // Adjust the size of the projectile as needed
@@ -225,15 +232,25 @@ private boolean isSimulationPaused = false;
     // Method to get gravity value based on selected gravity
     private double getGravityValue(String gravity) {
         if (gravity != null) {
-            return switch (gravity) {
-                case "Earth" -> 9.81; // Standard gravity on Earth (m/s^2)
-                case "Mars" -> 3.71; // Gravity on Mars (m/s^2)
-                case "Mercury" -> 3.7; // Gravity on Mercury (m/s^2)
-                case "Saturn" -> 10.44; // Gravity on Saturn (m/s^2)
-                default -> 9.81; // Default to Earth gravity if gravity is not recognized
-            };
+            switch (gravity) {
+                case "Earth":
+                    currentImage = earthImage;
+                    return 9.81; // Standard gravity on Earth (m/s^2)
+                case "Mars":
+                    currentImage = marsImage;
+                    return 3.71; // Gravity on Mars (m/s^2)
+                case "Mercury":
+                    currentImage = mercuryImage;
+                    return 3.7; // Gravity on Mercury (m/s^2)
+                case "Saturn":
+                    currentImage = saturnImage;
+                    return 10.44; // Gravity on Saturn (m/s^2)
+                default:
+                    currentImage = earthImage; // Default to Earth image if gravity is not recognized
+                    return 9.81; // Default to Earth gravity if gravity is not recognized
+            }
         } else {
-            // Handle the case when gravity is null (e.g., provide a default value)
+            currentImage = earthImage; // Default to Earth image if gravity is null
             return 9.81; // Default to Earth gravity if gravity is null
         }
     }
@@ -405,5 +422,8 @@ private boolean isSimulationPaused = false;
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+    private Image imageopenURL(String filename) {
+        return new Image(getClass().getResource(filename).toExternalForm());
     }
 }
