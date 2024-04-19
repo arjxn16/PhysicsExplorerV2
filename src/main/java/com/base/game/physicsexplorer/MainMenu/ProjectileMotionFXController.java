@@ -1,21 +1,27 @@
 package com.base.game.physicsexplorer.MainMenu;
 
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+
 import javafx.scene.paint.Color;
 import javafx.util.converter.NumberStringConverter;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProjectileMotionFXController {
 
+    private static final double CANVAS_WIDTH = 720 ;
+    private static final double CANVAS_HEIGHT = 480;
     public ToggleGroup massToggleGroup2;
     public ToggleGroup massToggleGroup1;
     public Button startSimulationButton;
@@ -53,69 +59,98 @@ public class ProjectileMotionFXController {
 
     private Projectile projectile;
     private boolean simulationRunning = false;
+    private long lastUpdate = 0;
+private boolean isSimulationPaused = false;
+    private GraphicsContext savedGraphicsContext;
+    private double projectileX;
+    private double projectileY;
+    private double pausedX;
+    private double pausedY;
 
-    @FXML
     private void startSimulation() {
         if (!simulationRunning) {
             simulationRunning = true;
             System.out.println("Simulation started");
-            drawSimulation(); // Call drawSimulation to update the canvas
+
+            // Create an AnimationTimer to update the simulation
+            new AnimationTimer() {
+                private double time = 0;
+
+                @Override
+                public void handle(long now) {
+                    if (lastUpdate == 0) {
+                        lastUpdate = now;
+                    }
+
+                    // Calculate the time elapsed since the last update
+                    double elapsedTime = (now - lastUpdate) / 1e9; // Convert nanoseconds to seconds
+                    lastUpdate = now;
+
+                    // Update the time
+                    time += elapsedTime;
+
+                    // Check if the simulation is paused
+                    if (!isSimulationPaused) {
+                        // Update the projectile's position
+                        double[] position = calculateProjectilePosition(time);
+                        projectileX = position[0];
+                        projectileY = position[1];
+
+                        // Update the canvas
+                        drawSimulation(projectileX, projectileY);
+                    }
+                }
+            }.start();
         } else {
             System.out.println("Simulation is already running");
         }
     }
 
-    @FXML
     private void stopSimulation() {
         if (simulationRunning) {
             simulationRunning = false;
-            // Add logic to stop the simulation
-            System.out.println("Simulation stopped");
+            isSimulationPaused = true;
+            savedGraphicsContext = simulationCanvas.getGraphicsContext2D();
+            previousXPositions.addLast(projectileX);
+            previousYPositions.addLast(projectileY);
+            pausedX = projectileX; // Update pausedX with the last known X position
+            pausedY = projectileY; // Update pausedY with the last known Y position
+            drawSimulation(projectileX, projectileY);
         } else {
             System.out.println("Simulation is not running");
         }
     }
 
-    @FXML
     private void resetSimulation() {
-        // Stop the simulation if it's running
-        stopSimulation();
+        if (simulationCanvas != null) {
+            // Clear the canvas
+            GraphicsContext gc = simulationCanvas.getGraphicsContext2D();
+            gc.clearRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
+        }
 
-        // Reset the projectile to default values
+        // Reset parameters
         projectile.resetToDefault();
+        pausedX = 0;
+        pausedY = 0;
+        isSimulationPaused = false;
 
-        // Clear the canvas
-        GraphicsContext gc = simulationCanvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
+        // Clear previous positions
+        previousXPositions.clear();
+        previousYPositions.clear();
+
+        // Reinitialize the canvas
+        simulationCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 
         System.out.println("Simulation reset");
-    }
-
-
-    public void onKeyPressed(KeyEvent keyEvent) {
-    }
-
-    public void mouseDragged(MouseEvent mouseEvent) {
-    }
-
-    public void mousePressed(MouseEvent mouseEvent) {
-    }
-
-    public void mouseReleased(MouseEvent mouseEvent) {
-    }
-
-    public void onRollbackClick(ActionEvent actionEvent) {
-    }
-
-
-
-    public void onStepForwardClick(ActionEvent actionEvent) {
     }
 
     public void onReturnToHomeButtonClick(ActionEvent actionEvent) {
     }
 
-    private void drawSimulation() {
+    private LinkedList<Double> previousXPositions = new LinkedList<>();
+    private LinkedList<Double> previousYPositions = new LinkedList<>();
+
+    private void drawSimulation(double projectileX, double projectileY) {
         GraphicsContext gc = simulationCanvas.getGraphicsContext2D();
 
         // Clear the canvas
@@ -125,52 +160,69 @@ public class ProjectileMotionFXController {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
 
-        // Draw the trajectory line
+        // Draw the projectile
+        double projectileSize = 10; // Adjust the size of the projectile as needed
+        gc.setFill(Color.BLUE);
+
+        // Use pausedX and pausedY to draw the projectile when the simulation is paused
+        if (isSimulationPaused) {
+            gc.fillOval(pausedX - projectileSize / 2, pausedY - projectileSize / 2, projectileSize, projectileSize);
+        } else {
+            gc.fillOval(projectileX - projectileSize / 2, projectileY - projectileSize / 2, projectileSize, projectileSize);
+        }
+
+        // Draw the trajectory line only if the simulation is not paused
+        if (!isSimulationPaused) {
+            // Draw the trajectory line
+            gc.setStroke(Color.RED);
+            gc.setLineWidth(2);
+
+            // Add the current position to the list
+            previousXPositions.add(projectileX);
+            previousYPositions.add(projectileY);
+
+            // Draw the trajectory line
+            for (int i = 1; i < previousXPositions.size(); i++) {
+                gc.strokeLine(previousXPositions.get(i - 1), previousYPositions.get(i - 1), previousXPositions.get(i), previousYPositions.get(i));
+            }
+        }
     }
 
-
-    // Method to calculate the X position of the projectile
-    private double calculateProjectileXPosition() {
-        double canvasWidth = simulationCanvas.getWidth(); // Width of the canvas
+    private double[] calculateProjectilePosition(double time) {
         double velocityX = projectile.getInitialVelocity() * Math.cos(Math.toRadians(projectile.getInitialAngle())); // X component of velocity
-
-        // Calculate time based on distance traveled horizontally (X direction)
-        double time = canvasWidth / velocityX;
-
-        double initialX = 0; // Starting X position, adjust as needed
-        return initialX + velocityX * time;
-    }
-
-    private double calculateProjectileYPosition() {
-        double initialY = simulationCanvas.getHeight() - projectile.getInitialHeight(); // Initial Y position
-        double velocityX = projectile.getInitialVelocity() * Math.cos(Math.toRadians(projectile.getInitialAngle())); // X component of velocity
-        double canvasWidth = simulationCanvas.getWidth(); // Width of the canvas
-        double time = canvasWidth / velocityX;
-        double velocityY = -projectile.getInitialVelocity() * Math.sin(Math.toRadians(projectile.getInitialAngle())); // Y component of velocity
+        double velocityY = projectile.getInitialVelocity() * Math.sin(Math.toRadians(projectile.getInitialAngle())); // Y component of velocity
         double g = getGravityValue(projectile.getGravity()); // Get gravity value based on selected gravity
-        double angleRadians = Math.toRadians(projectile.getInitialAngle()); // Convert angle to radians
-        double velocityXT = projectile.getInitialVelocity() * Math.cos(angleRadians); // Horizontal component of initial velocity
-        double velocityYT = projectile.getInitialVelocity() * Math.sin(angleRadians); // Vertical component of initial velocity
+        double initialX = 0; // Starting X position, adjust as needed
+        double initialY = simulationCanvas.getHeight() - projectile.getInitialHeight(); // Initial Y position, set to the bottom of the canvas minus initial height
+        double mass = projectile.getMass(); // Get mass value
 
-        return initialY + velocityYT * time + 0.5 * g * time * time; // Calculate Y position using projectile motion equation with angle
+        double x = initialX + velocityX * time; // Calculate X position
+        double y = initialY - velocityY * time + 0.5 * g * time * time / mass; // Calculate Y position, add gravity
+
+        // Check if the projectile has hit the ground or reached the right side of the canvas
+        if (y > simulationCanvas.getHeight() || x > simulationCanvas.getWidth()) {
+            stopSimulation();
+        }
+
+        // Check if the projectile has gone under the ground
+        if (y > simulationCanvas.getHeight()) {
+            y = simulationCanvas.getHeight(); // Set the Y position to the ground level
+            stopSimulation(); // Stop the simulation if the projectile goes under the ground
+        }
+
+        return new double[]{x, y};
     }
-
 
     // Method to get gravity value based on selected gravity
     private double getGravityValue(String gravity) {
         if (gravity != null) {
-            switch (gravity) {
-                case "Earth":
-                    return 9.81; // Standard gravity on Earth (m/s^2)
-                case "Mars":
-                    return 3.71; // Gravity on Mars (m/s^2)
-                case "Mercury":
-                    return 3.7; // Gravity on Mercury (m/s^2)
-                case "Saturn":
-                    return 10.44; // Gravity on Saturn (m/s^2)
-                default:
-                    return 9.81; // Default to Earth gravity if gravity is not recognized
-            }
+            return switch (gravity) {
+                case "Earth" -> 9.81; // Standard gravity on Earth (m/s^2)
+                case "Mars" -> 3.71; // Gravity on Mars (m/s^2)
+                case "Mercury" -> 3.7; // Gravity on Mercury (m/s^2)
+                case "Saturn" -> 10.44; // Gravity on Saturn (m/s^2)
+                default -> 9.81; // Default to Earth gravity if gravity is not recognized
+            };
         } else {
             // Handle the case when gravity is null (e.g., provide a default value)
             return 9.81; // Default to Earth gravity if gravity is null
@@ -188,18 +240,20 @@ public class ProjectileMotionFXController {
         initialVelocityTextField.textProperty().bindBidirectional(projectile.initialVelocityProperty(), new NumberStringConverter());
         initialAngleTextField.textProperty().bindBidirectional(projectile.initialAngleProperty(), new NumberStringConverter());
 
-        // Add listeners to update the projectile when mass and gravity change
         lightMassRadioButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 projectile.setMass(1.0); // Set light mass
+                heavyMassRadioButton.setSelected(false); // Deselect heavy mass button
             }
         });
 
         heavyMassRadioButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 projectile.setMass(10.0); // Set heavy mass
+                lightMassRadioButton.setSelected(false); // Deselect light mass button
             }
         });
+
 
         earthGravityRadioButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -228,13 +282,20 @@ public class ProjectileMotionFXController {
         // Other initialization code...
 
         // Add event listeners to text fields for input validation
-        initialHeightTextField.setOnAction(event -> validateInput(initialHeightTextField, "Initial height"));
-        initialVelocityTextField.setOnAction(event -> validateInput(initialVelocityTextField, "Initial velocity"));
-        initialAngleTextField.setOnAction(event -> validateInput(initialAngleTextField, "Initial angle"));
+        initialHeightTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            validateInput(initialHeightTextField, "Initial height");
+        });
+
+        initialVelocityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            validateInput(initialVelocityTextField, "Initial velocity");
+        });
+
+        initialAngleTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            validateInput(initialAngleTextField, "Initial angle");
+        });
     }
 
-    // Method to validate input for a text field
-// Method to validate input for a text field
+  // Method to validate input for a text field
     private void validateInput(TextField textField, String fieldName) {
         String inputText = textField.getText().trim();
         if (inputText.isEmpty()) {
@@ -251,9 +312,13 @@ public class ProjectileMotionFXController {
                 textField.setStyle("-fx-border-color: red;");
                 showAlert("Enter a non-negative value for " + fieldName);
                 textField.clear(); // Clear the text field
-            } else if (value > 1000) { // Adjust the upper limit as needed
+            } else if (fieldName.equals("Initial height") && (value < 0 || value > 480)) {
                 textField.setStyle("-fx-border-color: red;");
-                showAlert("Please enter a smaller value for " + fieldName);
+                showAlert("Enter a value between 0 and 480 for Initial height");
+                textField.clear(); // Clear the text field
+            } else if (fieldName.equals("Initial angle") && (value < 0 || value > 90)) {
+                textField.setStyle("-fx-border-color: red;");
+                showAlert("Enter a value between 0 and 90 for Initial angle");
                 textField.clear(); // Clear the text field
             } else {
                 // Reset border color if input is valid
@@ -265,7 +330,6 @@ public class ProjectileMotionFXController {
             textField.clear(); // Clear the text field
         }
     }
-
 
 
 
