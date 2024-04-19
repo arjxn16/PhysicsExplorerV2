@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class ProjectileMotionFX extends Application {
 
     @Override
@@ -26,4 +28,16 @@ public class ProjectileMotionFX extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-}
+
+
+        public Scene createProjectileMotionScene(Scene previousScene, Stage stage) throws IOException {
+            // Load the Projectile Motion scene FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ProjectileMotion.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            // Add any additional scene setup or initialization here
+            return scene;
+        }
+    }
+
+

@@ -3,12 +3,14 @@ package com.base.game.physicsexplorer.MainMenu;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
 import java.io.IOException;
@@ -140,7 +142,20 @@ private boolean isSimulationPaused = false;
 
         System.out.println("Simulation reset");
     }
+    @FXML
     public void onReturnToHomeButtonClick(ActionEvent actionEvent) {
+        // Get the current stage
+        Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        // Create a new instance of the Main class
+        Main main = new Main();
+
+        // Call the start() method to restart the application
+        try {
+            main.start(primaryStage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private LinkedList<Double> previousXPositions = new LinkedList<>();

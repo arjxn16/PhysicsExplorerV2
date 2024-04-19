@@ -11,6 +11,7 @@ public class PickSituationController {
     // Instances of various scenes and functionalities for the main menu
     private Scene previousScene;
     private Stage stage; // Add a stage variable
+    private Scene projectileMotionScene;
 
     // Method to set the previous scene
     public void setPreviousScene(Scene previousScene) {
@@ -31,9 +32,13 @@ public class PickSituationController {
 
 
     @FXML
-    private void onps2ButtonClick()  {
-
-
+    private void onps2ButtonClick() throws IOException {
+        if (projectileMotionScene == null) {
+            // Load the Projectile Motion scene if not loaded
+            projectileMotionScene = new ProjectileMotionFX().createProjectileMotionScene(stage.getScene(), stage);
+        }
+        updateTitle("Projectile Motion");
+        stage.setScene(projectileMotionScene);
     }
 
 
