@@ -1,5 +1,5 @@
 Fullscreen: false
-Resolution: 1280 x 720
+Resolution: 640 x 480
 Volume: 100
 MoveUp1: W
 MoveUp2: UP

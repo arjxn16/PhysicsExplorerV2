@@ -187,20 +187,17 @@ private Image currentImage;
             gc.fillOval(projectileX - projectileSize / 2, projectileY - projectileSize / 2, projectileSize, projectileSize);
         }
 
-        // Draw the trajectory line only if the simulation is not paused
-        if (!isSimulationPaused) {
-            // Draw the trajectory line
-            gc.setStroke(Color.RED);
-            gc.setLineWidth(2);
+        // Draw the trajectory line
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(2);
 
-            // Add the current position to the list
-            previousXPositions.add(projectileX);
-            previousYPositions.add(projectileY);
+        // Add the current position to the list
+        previousXPositions.add(projectileX);
+        previousYPositions.add(projectileY);
 
-            // Draw the trajectory line
-            for (int i = 1; i < previousXPositions.size(); i++) {
-                gc.strokeLine(previousXPositions.get(i - 1), previousYPositions.get(i - 1), previousXPositions.get(i), previousYPositions.get(i));
-            }
+        // Draw the trajectory line
+        for (int i = 1; i < previousXPositions.size(); i++) {
+            gc.strokeLine(previousXPositions.get(i - 1), previousYPositions.get(i - 1), previousXPositions.get(i), previousYPositions.get(i));
         }
     }
 
