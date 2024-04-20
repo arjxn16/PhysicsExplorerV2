@@ -18,10 +18,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class ProjectileMotionFXController {
-
-    private AnimationTimer animationTimer;
-    private static final double CANVAS_WIDTH = 720 ;
-    private static final double CANVAS_HEIGHT = 480;
     public ToggleGroup massToggleGroup2;
     public ToggleGroup massToggleGroup1;
     public Button startSimulationButton;
@@ -69,6 +65,7 @@ private Image currentImage;
         if (!simulationRunning) {
             simulationRunning = true;
             System.out.println("Simulation started");
+
 
             // Create an AnimationTimer to update the simulation
             new AnimationTimer() {
@@ -119,32 +116,7 @@ private Image currentImage;
         }
     }
 
-    private void resetSimulation() {
-        if (simulationCanvas != null) {
-            simulationCanvas.getGraphicsContext2D().clearRect(0, 0, simulationCanvas.getWidth(), simulationCanvas.getHeight());
-            simulationCanvas = null; // Sets canvas to null
-        }
 
-        simulationRunning = false; // Stop the simulation
-        isSimulationPaused = false; // reset the pause state
-
-        // Reset parameters
-        projectile.resetToDefault();
-        pausedX = 0;
-        pausedY = 0;
-
-        // Clear previous positions
-        previousXPositions.clear();
-        previousYPositions.clear();
-
-        // Stop and reset the AnimationTimer
-        if (animationTimer != null) {
-            animationTimer.stop();
-            animationTimer = null;
-        }
-
-        System.out.println("Simulation reset");
-    }
     @FXML
     public void onReturnToHomeButtonClick(ActionEvent actionEvent) {
         // Get the current stage
@@ -242,16 +214,11 @@ private Image currentImage;
                 case "Saturn":
                     currentImage = saturnImage;
                     return 10.44; // Gravity on Saturn (m/s^2)
-                default:
-                    currentImage = earthImage; // Default to Earth image if gravity is not recognized
-                    return 9.81; // Default to Earth gravity if gravity is not recognized
             }
-        } else {
-            currentImage = earthImage; // Default to Earth image if gravity is null
-            return 9.81; // Default to Earth gravity if gravity is null
         }
+        // If gravity is null, return 0 and don't set currentImage
+        return 0;
     }
-
 
 
     @FXML
@@ -333,8 +300,7 @@ private Image currentImage;
                 startSimulation();
             } else if (event.getTarget() == stopSimulationButton) {
                 stopSimulation();
-            } else if (event.getTarget() == resetSimulationButton) {
-                resetSimulation();
+
             }
         }
     }
@@ -397,12 +363,6 @@ private Image currentImage;
     private void onStopSimulationButtonClick(ActionEvent event) {
         eventQueue.add(event);
     }
-
-    @FXML
-    private void onResetSimulationButtonClick(ActionEvent event) {
-        eventQueue.add(event);
-    }
-
 
     public void openPhysicsClassroom(ActionEvent actionEvent) {
         openURL("https://www.physicsclassroom.com/class/vectors/Lesson-2/Horizontal-and-Vertical-Components-of-Velocity");

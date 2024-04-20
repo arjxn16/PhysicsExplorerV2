@@ -83,7 +83,6 @@
                                 <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="238.0" spacing="10.0" styleClass="small-text">
                                     <Button fx:id="startSimulationButton" onAction="#onStartSimulationButtonClick" text="Start Simulation" />
                                     <Button fx:id="stopSimulationButton" onAction="#onStopSimulationButtonClick" text="Stop Simulation" />
-                                    <Button fx:id="resetSimulationButton" onAction="#onResetSimulationButtonClick" text="Reset Simulation" />
                                 </HBox>
 
                             </children>
