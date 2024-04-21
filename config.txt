@@ -1,4 +1,4 @@
-Fullscreen: false
+Fullscreen: true
 Resolution: 640 x 480
 Volume: 100
 MoveUp1: W
@@ -9,11 +9,3 @@ MoveLeft1: A
 MoveLeft2: LEFT
 MoveRight1: D
 MoveRight2: RIGHT
-Shoot1: Left Click
-Shoot2: SPACE
-Aim1: Right Click
-Aim2: 
-Reload1: R
-Reload2: 
-Inventory1: TAB
-Inventory2: E

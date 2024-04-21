@@ -81,8 +81,8 @@
                                     </VBox>
                                 </HBox>
                                 <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="238.0" spacing="10.0" styleClass="small-text">
-                                    <Button fx:id="startSimulationButton" onAction="#onStartSimulationButtonClick" text="Start Simulation" />
-                                    <Button fx:id="stopSimulationButton" onAction="#onStopSimulationButtonClick" text="Stop Simulation" />
+                                    <Button fx:id="startSimulationButton" onAction="#onStartSimulationButtonClick" styleClass="menu-button" text="Start " />
+                                    <Button fx:id="stopSimulationButton" minHeight="38.0" onAction="#onStopSimulationButtonClick" prefHeight="38.0" prefWidth="110.0" styleClass="menu-button" text="Stop " />
                                 </HBox>
 
                             </children>
@@ -97,8 +97,7 @@
                                         <Insets left="3.0" />
                                     </padding>
                                     <children>
-                                        <Label prefHeight="400.0" prefWidth="237.0" text="Adjust initial height, velocity, and angle to observe how they influence the trajectory of a projectile. Projectile motion involves objects moving through the air under the influence of gravity. Key elements include initial height, velocity, angle, and gravity. Projectile motion finds applications in sports, engineering, and military technology. It's essential for optimizing athletic performance, designing structures, and military tactics. Experiment with different parameters to observe their effects. Pay attention to the angle of projection for significant changes. Explore how varying gravitational accelerations impact trajectories. Refer to the learn more section of the simulator to see the information about the laws of physics in this situation" wrapText="true">
-                                            Adjust initial height, velocity, and angle to observe how they influence the trajectory of a projectile. Projectile motion involves objects moving through the air under the influence of gravity. Key elements include initial height, velocity, angle, and gravity. Projectile motion finds applications in sports, engineering, and military technology. It's essential for optimizing athletic performance, designing structures, and military tactics. Experiment with different parameters to observe their effects. Pay attention to the angle of projection for significant changes. Explore how varying gravitational accelerations impact trajectories.
+                                        <Label prefHeight="400.0" prefWidth="237.0" text="Adjust initial height (0-100m), velocity (0-100m/s), and angle (0-90°) to observe how they influence the trajectory of a projectile. Note: Gravity is set to 9.8m/s (Earth's gravity), but you can also select Mars (3.71m/s), Mercury (3.71m/s), or Saturn (10.36m/s) using the toggle buttons. Reset the simulation by returning to Home and reloading the situation. Experiment with different parameters to observe their effects. Pay attention to the angle of projection for significant changes. Learn more about the laws of physics in this situation by referring to the Learn More section or the hyperlinks below." wrapText="true">
                                         </Label>
                                         <Hyperlink onAction="#openPhysicsClassroom" text="[Physics Classroom: Projectile Motion]" />
                                         <Hyperlink onAction="#openNASA" text="[NASA: Gravity and Motion]" />

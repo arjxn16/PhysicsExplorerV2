@@ -19,12 +19,7 @@ public class Config {
         defaultKeybinds.put("MoveLeft2", "LEFT");
         defaultKeybinds.put("MoveRight1", "D");
         defaultKeybinds.put("MoveRight2", "RIGHT");
-        defaultKeybinds.put("Shoot1", "Left Click");
-        defaultKeybinds.put("Shoot2", "SPACE");
-        defaultKeybinds.put("Aim1", "Right Click");
-        defaultKeybinds.put("Reload1", "R");
-        defaultKeybinds.put("Inventory1", "TAB");
-        defaultKeybinds.put("Inventory2", "E");
+
     }
 
     // Path to the configuration file where settings and keybindings are stored.
@@ -119,22 +114,6 @@ public class Config {
             writer.write("MoveRight1: " + keybinds.getOrDefault("MoveRight1", ""));
             writer.newLine();
             writer.write("MoveRight2: " + keybinds.getOrDefault("MoveRight2", ""));
-            writer.newLine();
-            writer.write("Shoot1: " + keybinds.getOrDefault("Shoot1", ""));
-            writer.newLine();
-            writer.write("Shoot2: " + keybinds.getOrDefault("Shoot2", ""));
-            writer.newLine();
-            writer.write("Aim1: " + keybinds.getOrDefault("Aim1", ""));
-            writer.newLine();
-            writer.write("Aim2: " + keybinds.getOrDefault("Aim2", ""));
-            writer.newLine();
-            writer.write("Reload1: " + keybinds.getOrDefault("Reload1", ""));
-            writer.newLine();
-            writer.write("Reload2: " + keybinds.getOrDefault("Reload2", ""));
-            writer.newLine();
-            writer.write("Inventory1: " + keybinds.getOrDefault("Inventory1", ""));
-            writer.newLine();
-            writer.write("Inventory2: " + keybinds.getOrDefault("Inventory2", ""));
             writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
