@@ -7,7 +7,7 @@
     <groupId>com.base.game</groupId>
     <artifactId>PhysicsExplorer</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>RetroRampage</name>
+    <name>PhysicsExplorer</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,6 +41,11 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>21-ea+24</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -63,7 +68,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.base.game.retrorampage/com.base.game.physicsexplorer.MainMenu.Main
+                            <mainClass>com.base.game.physicsexplorer/com.base.game.physicsexplorer.MainMenu.Main
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

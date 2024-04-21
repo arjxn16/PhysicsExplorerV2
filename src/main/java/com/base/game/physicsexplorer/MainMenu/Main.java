@@ -4,7 +4,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.print.attribute.standard.Media;
 import java.io.IOException;
+
 
 public class Main extends Application {
 
@@ -21,6 +23,10 @@ public class Main extends Application {
 
         // Show the main menu scene on the provided stage
         showMainMenu(stage, mainMenuScene);
+
+
+
+
     }
 
     // Method to set the provided scene on the given stage and display it
@@ -28,6 +34,9 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+
+
 
 
     // The main method to launch the JavaFX application
