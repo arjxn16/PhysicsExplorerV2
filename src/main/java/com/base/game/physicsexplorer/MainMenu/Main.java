@@ -7,6 +7,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Main extends Application {
@@ -27,21 +28,25 @@ public class Main extends Application {
         showMainMenu(stage, mainMenuScene);
 
         // Play background audio
-        String audioFilePath = getClass().getResource("backgroundmusic.wav").toExternalForm();
-        System.out.println("Audio file path: " + audioFilePath); // Print audio file path for debugging
-        Media media = new Media(audioFilePath);
+        String audioFilePath = "music-wav.wav";
+        File audioFile = new File(audioFilePath);
+        if (audioFile.exists()) {
+            Media media = new Media(audioFile.toURI().toString());
 
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setOnError(() -> {
-            System.out.println("Media error occurred: " + mediaPlayer.getError());
-            // Handle media error here
-        });
-        mediaPlayer.setVolume(config.loadVolumeSetting() / 100.0); // Convert percentage to 0.0-1.0 range
-        mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO); // Rewind to the beginning
-            mediaPlayer.play(); // Restart playback
-        });
-        mediaPlayer.play();
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setOnError(() -> {
+                System.out.println("Media error occurred: " + mediaPlayer.getError());
+                // Handle media error here
+            });
+            mediaPlayer.setVolume(config.loadVolumeSetting() / 100.0); // Convert percentage to 0.0-1.0 range
+            mediaPlayer.setOnEndOfMedia(() -> {
+                mediaPlayer.seek(Duration.ZERO); // Rewind to the beginning
+                mediaPlayer.play(); // Restart playback
+            });
+            mediaPlayer.play();
+        } else {
+            System.out.println("Audio file not found: " + audioFilePath);
+        }
     }
 
     // Method to set the provided scene on the given stage and display it
