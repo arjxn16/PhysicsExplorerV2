@@ -2,6 +2,7 @@ package com.base.game.physicsexplorer.MainMenu;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -37,8 +38,13 @@ public class PickSituationController {
             // Load the Projectile Motion scene if not loaded
             projectileMotionScene = new ProjectileMotionFX().createProjectileMotionScene(stage.getScene(), stage);
         }
+        // Create a new Config object
+        Config config = new Config("config.txt");
+        // Apply settings to the stage
+        applySettingsToStage(stage, config);
         updateTitle("Projectile Motion");
         stage.setScene(projectileMotionScene);
+
     }
 
 
@@ -56,5 +62,21 @@ public class PickSituationController {
             stage.setScene(previousScene);
             updateTitle("Main Menu");
         }
+    }
+    private static void applySettingsToStage(Stage stage, Config config) {
+// Load the resolution setting from the config and split it into width and height
+        String resolution = config.loadResolutionSetting();
+        String[] parts = resolution.split(" x ");
+        if (parts.length == 2) {
+// Parse and apply width and height to the stage
+            stage.setWidth(Integer.parseInt(parts[0]));
+            stage.setHeight(Integer.parseInt(parts[1]));
+        }
+// Set the full screen exit hint to an empty string (no hint displayed)
+        stage.setFullScreenExitHint("");
+// Disable the default full screen exit key combination
+        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+// Apply the fullscreen setting from the config
+        stage.setFullScreen(config.loadFullscreenSetting());
     }
 }
